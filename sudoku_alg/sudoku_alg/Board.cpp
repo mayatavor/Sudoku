@@ -18,12 +18,12 @@ Board::Board(std::string b)
     }
 }
 
-bool Board::AddNumber(int number, int r, int c)
+bool Board::AddNumber(PlaceInfo place)
 {
-    if (this->board[r][c] == 0)
+    if (this->board[place.rowNumber][place.columnNumber] == 0)
     {
-        this->board[r][c] = number;
-        this->number_amount[number - 1] = this->number_amount[number - 1] + 1;
+        this->board[place.rowNumber][place.columnNumber] = place.number;
+        this->number_amount[place.number - 1] = this->number_amount[place.number - 1] + 1;
     }
 }
 
