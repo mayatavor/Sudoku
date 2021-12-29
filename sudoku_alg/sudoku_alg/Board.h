@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include "Structs.h"
 
 #define BOARD_SIZE 9
 
@@ -15,7 +16,7 @@ public:
 	input: the number to add, the row number and the column number
 	output: if the number was added successfully or not
 	*/
-	bool AddNumber(int number, int r, int c);
+	bool AddNumber(PlaceInfo);
 
 	/*
 	this functio checks if the number is in the row
@@ -39,8 +40,8 @@ public:
 	//starters
 	int CountNumber(std::string b, int number);
 
-private:
 	int board[9][9];
+private:
 	int number_amount[9];
 };
 
