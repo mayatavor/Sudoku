@@ -3,9 +3,10 @@
 #include <string>
 #include "Board.h"
 #include "Structs.h"
+#include <vector>
 
 #define BOARD_SIZE 9
-
+#define CUBE_SIZE 3
 
 /*
 this function gets the row and column of the first place in the cube and the number to check, and checks is the number is in the cube
@@ -14,9 +15,9 @@ output: if the number is in the cube or not
 */
 bool CheckCube(int r, int c, int num, Board b)
 {
-	for (size_t i = 0; i < 3; i++)
+	for (size_t i = 0; i < CUBE_SIZE; i++)
 	{
-		for (size_t j = 0; j < 3; j++)
+		for (size_t j = 0; j < CUBE_SIZE; j++)
 		{
 			if (b.board[r + i][c + j] == num)
 				return true;
@@ -86,9 +87,9 @@ int WhatIsMissingInCube(int r, int c, Board b)
 	int numbers_exist[BOARD_SIZE] = { 0,0,0,0,0,0,0,0 };
 	int numbers_count = 0;
 
-	for (size_t i = 0; i < 3; i++)
+	for (size_t i = 0; i < CUBE_SIZE; i++)
 	{
-		for (size_t j = 0; j < 3; j++)
+		for (size_t j = 0; j < CUBE_SIZE; j++)
 		{
 			if (b.board[i][j] != 0)
 			{
@@ -151,6 +152,22 @@ int WhatIsMissingInColumn(int c, Board b)
 
 
 /*
+this function gets the rows and columns of the cube and searches for places to put the number in
+input: a bool array for the rows and a bool array for the columns
+output: a vector of places to put the number in
+*/
+std::vector<PlaceInfo> FindPlacesInCube(bool rows[], bool columns[], int rNum, int cNum)
+{
+	std::vector<PlaceInfo> places;
+
+
+
+
+	return places;
+}
+
+
+/*
 this function will get a cube that does not have the number and will find the place to add the number
 input: the number, the row and column of the cube and the board
 output: a PlaceInfo for the place to add the number
@@ -158,6 +175,18 @@ output: a PlaceInfo for the place to add the number
 */
 PlaceInfo FindPlaceToAddNumber(int number, int c, int r, Board b)
 {
+	bool rows[] = { false,false,false };
+	bool columns[] = { false,false,false };
+
+	for (size_t i = 0; i < CUBE_SIZE; i++)
+	{
+		rows[i] = CheckRow(r, number, b);
+	}
+	for (size_t i = 0; i < CUBE_SIZE; i++)
+	{
+		columns[i] = CheckColumn(c, number, b);
+	}
+
 
 
 }
@@ -172,13 +201,13 @@ output: none
 */
 void ForLoopForNumber(int number, Board *b)
 {
-	int rowNum = 0, columnNum = -3;
+	int rowNum = 0, columnNum = -CUBE_SIZE;
 	for (size_t i = 0; i < BOARD_SIZE; i++)
 	{
 		if (columnNum == 9)
 		{
 			rowNum++;
-			columnNum = -3;
+			columnNum = -CUBE_SIZE;
 		}
 		columnNum++;
 		if (CheckCube(rowNum, columnNum, number, *b))
