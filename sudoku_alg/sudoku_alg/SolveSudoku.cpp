@@ -151,6 +151,29 @@ int WhatIsMissingInColumn(int c, Board b)
 }
 
 
+
+/*
+this function gets the vector of the PlaceInfo of where the number can be added
+the function will filter the full places(the places that already have a number)
+input: the vector of PlaceInfo and the board
+output: if there is only 1 free place, it will sent this place
+		else it will sent a PlaceInfo where the row and column numbers are 100 (not a valid place)
+*/
+PlaceInfo FindFreePlace(std::vector<PlaceInfo> places, Board b)
+{
+	std::vector<PlaceInfo> free_places;
+	for (size_t i = 0; i < places.size(); i++)
+	{
+		if (b.board[places[i].rowNumber][places[i].columnNumber] == 0)
+			free_places.push_back(PlaceInfo(places[i]));
+	}
+
+	if (free_places.size() == 1)
+		return free_places[0];
+	return PlaceInfo(100, 100);
+}
+
+
 /*
 this function gets the rows and columns of the cube and searches for places to put the number in
 input: a bool array for the rows and a bool array for the columns
@@ -160,8 +183,17 @@ std::vector<PlaceInfo> FindPlacesInCube(bool rows[], bool columns[], int rNum, i
 {
 	std::vector<PlaceInfo> places;
 
-
-
+	for (size_t i = 0; i < CUBE_SIZE; i++)
+	{
+		if (rows[i] == true)
+			break;
+		for (size_t j = 0; j < CUBE_SIZE; j++)
+		{
+			if (columns[j] == true)
+				break;
+			places.push_back(PlaceInfo(i, j));
+		}
+	}
 
 	return places;
 }
@@ -187,34 +219,38 @@ PlaceInfo FindPlaceToAddNumber(int number, int c, int r, Board b)
 		columns[i] = CheckColumn(c, number, b);
 	}
 
-
-
+	std::vector<PlaceInfo> places = FindPlacesInCube(rows, columns, r, c);
+	return FindFreePlace(places, b);
 }
 
 
-
-
 /*
-this function goes over the cubes and checks where the number can be added
+this function goes over the cubes and checks where the number can be added, and if it can, it adds it
 input: the number and a pointer to the board
 output: none
 */
 void ForLoopForNumber(int number, Board *b)
 {
-	int rowNum = 0, columnNum = -CUBE_SIZE;
+	int rowNum = 0, columnNum = 0;
 	for (size_t i = 0; i < BOARD_SIZE; i++)
 	{
 		if (columnNum == 9)
 		{
-			rowNum++;
-			columnNum = -CUBE_SIZE;
+			rowNum += 3;
+			columnNum = 0;
 		}
-		columnNum++;
 		if (CheckCube(rowNum, columnNum, number, *b))
 			break;
 
+		PlaceInfo place = FindPlaceToAddNumber(number, rowNum, columnNum, *b);
 
+		if (place.columnNumber == 100)
+			break;
 
+		place.number = number;
+
+		b->board[place.rowNumber][place.rowNumber] = place.number;
+		columnNum += 3;
 	}
 }
 
