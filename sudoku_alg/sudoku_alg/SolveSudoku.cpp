@@ -126,7 +126,7 @@ std::vector<PlaceInfo> SolveSoduko::FindPlacesInCube(bool rows[], bool columns[]
 		{
 			if (columns[j] == true)
 				continue;
-			places->push_back(PlaceInfo(i, j));
+			places->push_back(PlaceInfo(rNum + i, cNum + j));
 		}
 	}
 
@@ -164,12 +164,18 @@ void SolveSoduko::ForLoopForNumber(int number)
 			columnNum = 0;
 		}
 		if (CheckCube(rowNum, columnNum, number))
+		{
+			columnNum += 3;
 			continue;
+		}
 
-		PlaceInfo place = FindPlaceToAddNumber(number, rowNum, columnNum);
+		PlaceInfo place = FindPlaceToAddNumber(number, columnNum, rowNum);
 
 		if (place.columnNumber == 100)
+		{
+			columnNum += 3;
 			continue;
+		}
 
 		place.number = number;
 
@@ -276,7 +282,7 @@ void SolveSoduko::Solve()
 			ForLoopForNumber(i);
 		}
 		RowsColumnsAndCubes();
-
-		this->b->PrintBoard();
 	}
+
+	this->b->PrintBoard();
 }
