@@ -2,23 +2,27 @@
 
 #include "Board.h"
 #include "Structs.h"
+#include <vector>
 
 class SolveSoduko
 {
 public:
+
+	SolveSoduko(std::string board);
+
 	/*
 	this function is the loop to solve the sudoku
 	input: a pointer to the board
 	output: none
 	*/
-	void Solve(Board* b);
+	void Solve();
 
 	/*
 	this function gets the row and column of the first place in the cube and the number to check, and checks is the number is in the cube
 	input: row number, column number, the number to check and the board
 	output: if the number is in the cube or not
 	*/
-	bool CheckCube(int r, int c, int num, Board b);
+	bool CheckCube(int r, int c, int num);
 
 
 	/*
@@ -35,7 +39,7 @@ public:
 	output: if only one number is missing -> the number (1->9)
 			if there is more than 1 number missing -> 0
 	*/
-	int WhatIsMissingInCube(int r, int c, Board b);
+	int WhatIsMissingInCube(int r, int c);
 	/*
 	this function will check what is the missing number in the row,
 	if there is more than 1 number missing, it will return 0
@@ -43,7 +47,7 @@ public:
 	output: if only one number is missing -> the number (1->9)
 			if there is more than 1 number missing -> 0
 	*/
-	int WhatIsMissingInRow(int r, Board b);
+	int WhatIsMissingInRow(int r);
 	/*
 	this function will check what is the missing number in the column,
 	if there is more than 1 number missing, it will return 0
@@ -51,7 +55,7 @@ public:
 	output: if only one number is missing -> the number (1->9)
 			if there is more than 1 number missing -> 0
 	*/
-	int WhatIsMissingInColumn(int c, Board b);
+	int WhatIsMissingInColumn(int c);
 
 
 	/*
@@ -61,7 +65,7 @@ public:
 	output: if there is only 1 free place, it will sent this place
 			else it will sent a PlaceInfo where the row and column numbers are 100 (not a valid place)
 	*/
-	PlaceInfo FindFreePlace(std::vector<PlaceInfo> places, Board b);
+	PlaceInfo FindFreePlace(std::vector<PlaceInfo> places);
 
 	/*
 	this function gets the rows and columns of the cube and searches for places to put the number in
@@ -76,14 +80,14 @@ public:
 	output: a PlaceInfo for the place to add the number
 			if there is more than one place, it will return a PlaceInfo with the number 0
 	*/
-	PlaceInfo FindPlaceToAddNumber(int number, int c, int r, Board b);
+	PlaceInfo FindPlaceToAddNumber(int number, int c, int r);
 
 	/*
 	this function goes over the cubes and checks where the number can be added, and if it can, it adds it
 	input: the number and a pointer to the board
 	output: none
 	*/
-	void ForLoopForNumber(int number, Board* b);
+	void ForLoopForNumber(int number);
 
 	/*
 	this function gets the row, number and board, and adds the number to the row
@@ -92,7 +96,7 @@ public:
 	input: the row number, the number to add and a pointer to the board
 	output: none
 	*/
-	void AddToRow(int row, int num, Board* b);
+	void AddToRow(int row, int num);
 	/*
 	this function gets the column, number and board, and adds the number to the column
 			***** this function only gets a column with one number missing *****
@@ -100,7 +104,7 @@ public:
 	input: the column number, the number to add and a pointer to the board
 	output: none
 	*/
-	void AddToColumn(int column, int num, Board* b);
+	void AddToColumn(int column, int num);
 	/*
 	this function gets the row and column of the column, number and board, and adds the number to the cube
 			***** this function only gets a cube with one number missing *****
@@ -108,7 +112,7 @@ public:
 	input: the row number, the column number, the number to add and a pointer to the board
 	output: none
 	*/
-	void AddToCube(int row, int col, int num, Board* b);
+	void AddToCube(int row, int col, int num);
 
 
 	/*
@@ -116,18 +120,10 @@ public:
 	input: a pointer to the board
 	output: none
 	*/
-	void RowsColumnsAndCubes(Board* b);
+	void RowsColumnsAndCubes();
 
 
-
-
-
-
-
-
-
-
-
-
+private:
+	Board *b;
 };
 

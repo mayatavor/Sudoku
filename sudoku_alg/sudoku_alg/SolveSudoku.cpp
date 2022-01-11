@@ -11,13 +11,18 @@
 #define CUBE_SIZE 3
 
 
-bool SolveSoduko::CheckCube(int r, int c, int num, Board b)
+SolveSoduko::SolveSoduko(std::string board)
+{
+	this->b = new Board(board);
+}
+
+bool SolveSoduko::CheckCube(int r, int c, int num)
 {
 	for (size_t i = 0; i < CUBE_SIZE; i++)
 	{
 		for (size_t j = 0; j < CUBE_SIZE; j++)
 		{
-			if (b.board[r + i][c + j] == num)
+			if (this->b->board[r + i][c + j] == num)
 				return true;
 		}
 	}
@@ -38,7 +43,7 @@ int SolveSoduko::ReturnMissing(int exists[], int count)
 }
 
 
-int SolveSoduko::WhatIsMissingInCube(int r, int c, Board b)
+int SolveSoduko::WhatIsMissingInCube(int r, int c)
 {
 	int numbers_exist[BOARD_SIZE] = { 0,0,0,0,0,0,0,0 };
 	int numbers_count = 0;
@@ -47,10 +52,10 @@ int SolveSoduko::WhatIsMissingInCube(int r, int c, Board b)
 	{
 		for (size_t j = 0; j < CUBE_SIZE; j++)
 		{
-			if (b.board[i][j] != 0)
+			if (this->b->board[i][j] != 0)
 			{
 				numbers_count++;
-				numbers_exist[b.board[i][j] - 1] = b.board[i][j];
+				numbers_exist[this->b->board[i][j] - 1] = this->b->board[i][j];
 			}
 		}
 	}
@@ -58,34 +63,34 @@ int SolveSoduko::WhatIsMissingInCube(int r, int c, Board b)
 	return ReturnMissing(numbers_exist, numbers_count);
 }
 
-int SolveSoduko::WhatIsMissingInRow(int r, Board b)
+int SolveSoduko::WhatIsMissingInRow(int r)
 {
 	int numbers_exist[BOARD_SIZE] = { 0,0,0,0,0,0,0,0 };
 	int numbers_count = 0;
 
 	for (size_t i = 0; i < BOARD_SIZE; i++)
 	{
-		if (b.board[r][i] != 0)
+		if (this->b->board[r][i] != 0)
 		{
 			numbers_count++;
-			numbers_exist[b.board[r][i] - 1] = b.board[r][i];
+			numbers_exist[this->b->board[r][i] - 1] = this->b->board[r][i];
 		}
 	}
 
 	return ReturnMissing(numbers_exist, numbers_count);
 }
 
-int SolveSoduko::WhatIsMissingInColumn(int c, Board b)
+int SolveSoduko::WhatIsMissingInColumn(int c)
 {
 	int numbers_exist[BOARD_SIZE] = { 0,0,0,0,0,0,0,0 };
 	int numbers_count = 0;
 
 	for (size_t i = 0; i < BOARD_SIZE; i++)
 	{
-		if (b.board[i][c] != 0)
+		if (this->b->board[i][c] != 0)
 		{
 			numbers_count++;
-			numbers_exist[b.board[i][c] - 1] = b.board[i][c];
+			numbers_exist[this->b->board[i][c] - 1] = this->b->board[i][c];
 		}
 	}
 
@@ -94,12 +99,12 @@ int SolveSoduko::WhatIsMissingInColumn(int c, Board b)
 
 
 
-PlaceInfo SolveSoduko::FindFreePlace(std::vector<PlaceInfo> places, Board b)
+PlaceInfo SolveSoduko::FindFreePlace(std::vector<PlaceInfo> places)
 {
 	std::vector<PlaceInfo> free_places;
 	for (size_t i = 0; i < places.size(); i++)
 	{
-		if (b.board[places[i].rowNumber][places[i].columnNumber] == 0)
+		if (this->b->board[places[i].rowNumber][places[i].columnNumber] == 0)
 			free_places.push_back(PlaceInfo(places[i]));
 	}
 
@@ -129,26 +134,26 @@ std::vector<PlaceInfo> SolveSoduko::FindPlacesInCube(bool rows[], bool columns[]
 }
 
 
-PlaceInfo SolveSoduko::FindPlaceToAddNumber(int number, int c, int r, Board b)
+PlaceInfo SolveSoduko::FindPlaceToAddNumber(int number, int c, int r)
 {
 	bool rows[] = { false,false,false };
 	bool columns[] = { false,false,false };
 
 	for (size_t i = 0; i < CUBE_SIZE; i++)
 	{
-		rows[i] = b.CheckForRow(r, number);
+		rows[i] = this->b->CheckForRow(r, number);
 	}
 	for (size_t i = 0; i < CUBE_SIZE; i++)
 	{
-		columns[i] = b.CheckForColumn(c, number);
+		columns[i] = this->b->CheckForColumn(c, number);
 	}
 
 	std::vector<PlaceInfo> places = FindPlacesInCube(rows, columns, r, c);
-	return FindFreePlace(places, b);
+	return FindFreePlace(places);
 }
 
 
-void SolveSoduko::ForLoopForNumber(int number, Board *b)
+void SolveSoduko::ForLoopForNumber(int number)
 {
 	int rowNum = 0, columnNum = 0;
 	for (size_t i = 0; i < BOARD_SIZE; i++)
@@ -158,10 +163,10 @@ void SolveSoduko::ForLoopForNumber(int number, Board *b)
 			rowNum += 3;
 			columnNum = 0;
 		}
-		if (CheckCube(rowNum, columnNum, number, *b))
+		if (CheckCube(rowNum, columnNum, number))
 			continue;
 
-		PlaceInfo place = FindPlaceToAddNumber(number, rowNum, columnNum, *b);
+		PlaceInfo place = FindPlaceToAddNumber(number, rowNum, columnNum);
 
 		if (place.columnNumber == 100)
 			continue;
@@ -174,7 +179,7 @@ void SolveSoduko::ForLoopForNumber(int number, Board *b)
 }
 
 
-void SolveSoduko::AddToRow(int row, int num, Board* b)
+void SolveSoduko::AddToRow(int row, int num)
 {
 	for (size_t i = 0; i < BOARD_SIZE; i++)
 	{
@@ -186,7 +191,7 @@ void SolveSoduko::AddToRow(int row, int num, Board* b)
 	}
 }
 
-void SolveSoduko::AddToColumn(int column, int num, Board* b)
+void SolveSoduko::AddToColumn(int column, int num)
 {
 	for (size_t i = 0; i < BOARD_SIZE; i++)
 	{
@@ -198,7 +203,7 @@ void SolveSoduko::AddToColumn(int column, int num, Board* b)
 	}
 }
 
-void SolveSoduko::AddToCube(int row, int col, int num, Board* b)
+void SolveSoduko::AddToCube(int row, int col, int num)
 {
 	for (size_t i = row; i < CUBE_SIZE; i++)
 	{
@@ -215,28 +220,28 @@ void SolveSoduko::AddToCube(int row, int col, int num, Board* b)
 
 
 
-void SolveSoduko::RowsColumnsAndCubes(Board* b)
+void SolveSoduko::RowsColumnsAndCubes()
 {
 	int now = 0;
 
 	//adding to the rows
 	for (size_t i = 0; i < BOARD_SIZE; i++)
 	{
-		now = WhatIsMissingInRow(i, *b);
+		now = WhatIsMissingInRow(i);
 		if (now == 0)
 			continue;
 		
-		AddToRow(i, now, b);
+		AddToRow(i, now);
 	}
 
 	//adding to the column
 	for (size_t i = 0; i < BOARD_SIZE; i++)
 	{
-		now = WhatIsMissingInColumn(i, *b);
+		now = WhatIsMissingInColumn(i);
 		if (now == 0)
 			continue;
 
-		AddToColumn(i, now, b);
+		AddToColumn(i, now);
 	}
 
 	//adding to the cube
@@ -244,11 +249,11 @@ void SolveSoduko::RowsColumnsAndCubes(Board* b)
 	{
 		for (size_t j = 0; j < CUBE_SIZE; j+=3)
 		{
-			now = WhatIsMissingInCube(i, j, *b);
+			now = WhatIsMissingInCube(i, j);
 			if (now == 0)
 				continue;
 
-			AddToCube(i, j, now, b);
+			AddToCube(i, j, now);
 		}
 	}
 
@@ -261,14 +266,14 @@ this function is the loop to solve the sudoku
 input: a pointer to the board
 output: none
 */
-void SolveSoduko::Solve(Board *b)
+void SolveSoduko::Solve()
 {
 	while (b->GetCount() < 81)
 	{
 		for (size_t i = 0; i < BOARD_SIZE; i++)
 		{
-			ForLoopForNumber(i, b);
+			ForLoopForNumber(i);
 		}
-		RowsColumnsAndCubes(b);
+		RowsColumnsAndCubes();
 	}
 }
