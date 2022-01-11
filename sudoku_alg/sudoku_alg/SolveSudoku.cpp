@@ -116,7 +116,7 @@ PlaceInfo SolveSoduko::FindFreePlace(std::vector<PlaceInfo> places)
 
 std::vector<PlaceInfo> SolveSoduko::FindPlacesInCube(bool rows[], bool columns[], int rNum, int cNum)
 {
-	std::vector<PlaceInfo> places;
+	std::vector<PlaceInfo> *places = new std::vector<PlaceInfo>();
 
 	for (size_t i = 0; i < CUBE_SIZE; i++)
 	{
@@ -126,11 +126,11 @@ std::vector<PlaceInfo> SolveSoduko::FindPlacesInCube(bool rows[], bool columns[]
 		{
 			if (columns[j] == true)
 				continue;
-			places.push_back(PlaceInfo(i, j));
+			places->push_back(PlaceInfo(i, j));
 		}
 	}
 
-	return places;
+	return *places;
 }
 
 
@@ -141,11 +141,11 @@ PlaceInfo SolveSoduko::FindPlaceToAddNumber(int number, int c, int r)
 
 	for (size_t i = 0; i < CUBE_SIZE; i++)
 	{
-		rows[i] = this->b->CheckForRow(r, number);
+		rows[i] = this->b->CheckForRow(r+i, number);
 	}
 	for (size_t i = 0; i < CUBE_SIZE; i++)
 	{
-		columns[i] = this->b->CheckForColumn(c, number);
+		columns[i] = this->b->CheckForColumn(c+i, number);
 	}
 
 	std::vector<PlaceInfo> places = FindPlacesInCube(rows, columns, r, c);
@@ -268,12 +268,15 @@ output: none
 */
 void SolveSoduko::Solve()
 {
+	this->b->PrintBoard();
 	while (b->GetCount() < 81)
 	{
-		for (size_t i = 0; i < BOARD_SIZE; i++)
+		for (size_t i = 1; i <= BOARD_SIZE; i++)
 		{
 			ForLoopForNumber(i);
 		}
 		RowsColumnsAndCubes();
+
+		this->b->PrintBoard();
 	}
 }

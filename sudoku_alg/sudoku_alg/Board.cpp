@@ -1,4 +1,6 @@
 #include "Board.h"
+#include <iostream>
+#include <string>
 
 Board::Board(std::string b)
 {
@@ -7,7 +9,7 @@ Board::Board(std::string b)
     {
         for (size_t j = 0; j < BOARD_SIZE; j++)
         {
-            this->board[i][j] = b[count];
+            this->board[i][j] = b[count] - 48;
             count++;
         }
     }
@@ -17,10 +19,8 @@ Board::Board(std::string b)
         this->number_amount[i] = this->CountNumber(b, i+1);
     }
     
-    for (size_t i = 0; i < BOARD_SIZE; i++)
-    {
-        this->number_count += this->number_amount[i];
-    }
+    this->number_count = 81 - this->CountNumber(b,0);
+    
 }
 
 void Board::AddNumber(PlaceInfo place)
@@ -98,7 +98,6 @@ void Board::PrintBoard()
     std::cout << "-------------------------" << std::endl;
     for (size_t i = 0; i < BOARD_SIZE; i++)
     {
-        std::cout << "|";
         for (size_t j = 0; j < BOARD_SIZE; j++)
         {
             if (j % 3 == 0)
@@ -106,10 +105,11 @@ void Board::PrintBoard()
 
             std::cout << this->board[i][j] << " ";
         }
+        std::cout << "|";
 
         std::cout << std::endl;
 
-        if (i % 3 == 0)
+        if (i % 3 == 2)
             std::cout << "-------------------------" << std::endl;
     }
 }
@@ -117,7 +117,13 @@ void Board::PrintBoard()
 //helpers
 int Board::CountNumber(std::string b, int number)
 {
-    return std::count(b.begin(), b.end(), number);
+    int count = 0;
+    std::string c = std::to_string(number);
+
+    for (int i = 0; i < b.size(); i++)
+        if (b[i] == c[0]) count++;
+
+    return count;
 }
 
 int Board::GetCount()
