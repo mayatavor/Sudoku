@@ -24,38 +24,8 @@ bool CheckCube(int r, int c, int num, Board b)
 				return true;
 		}
 	}
+	return false;
 }
-
-
-/*
-this function gets the row and the number to check, and checks is the number is in the row
-input: row number, the number to check and the board
-output: if the number is in the row or not
-*/
-bool CheckRow(int r, int num, Board b)
-{
-	for (size_t i = 0; i < BOARD_SIZE; i++)
-	{
-		if (b.board[r][i] == num)
-			return true;
-	}
-}
-
-
-/*
-this function gets the column and the number to check, and checks is the number is in the column
-input: column number, the number to check and the board
-output: if the number is in the column or not
-*/
-bool CheckColumn(int c, int num, Board b)
-{
-	for (size_t i = 0; i < BOARD_SIZE; i++)
-	{
-		if (b.board[i][c] == num)
-			return true;
-	}
-}
-
 
 /*
 this function gets the numbers that exist in the cube, row or column 
@@ -213,11 +183,11 @@ PlaceInfo FindPlaceToAddNumber(int number, int c, int r, Board b)
 
 	for (size_t i = 0; i < CUBE_SIZE; i++)
 	{
-		rows[i] = CheckRow(r, number, b);
+		rows[i] = b.CheckForRow(r, number);
 	}
 	for (size_t i = 0; i < CUBE_SIZE; i++)
 	{
-		columns[i] = CheckColumn(c, number, b);
+		columns[i] = b.CheckForColumn(c, number);
 	}
 
 	std::vector<PlaceInfo> places = FindPlacesInCube(rows, columns, r, c);
@@ -250,7 +220,7 @@ void ForLoopForNumber(int number, Board *b)
 
 		place.number = number;
 
-		b->board[place.rowNumber][place.columnNumber] = place.number;
+		b->AddNumber(PlaceInfo(place.number, place.rowNumber, place.columnNumber));
 		columnNum += 3;
 	}
 }
@@ -269,7 +239,7 @@ void AddToRow(int row, int num, Board* b)
 	{
 		if (b->board[row][i] == 0)
 		{
-			b->board[row][i] = num;
+			b->AddNumber(PlaceInfo(num, row, i));
 			break;
 		}
 	}
@@ -287,7 +257,7 @@ void AddToColumn(int column, int num, Board* b)
 	{
 		if (b->board[i][column] == 0)
 		{
-			b->board[i][column] = num;
+			b->AddNumber(PlaceInfo(num, i, column));
 			break;
 		}
 	}
@@ -307,7 +277,7 @@ void AddToCube(int row, int col, int num, Board* b)
 		{
 			if (b->board[i][j] == 0)
 			{
-				b->board[i][j] = num;
+				b->AddNumber(PlaceInfo(num, i, j));
 				break;
 			}
 		}
@@ -338,11 +308,11 @@ void RowsColumnsAndCubes(Board* b)
 	//adding to the column
 	for (size_t i = 0; i < BOARD_SIZE; i++)
 	{
-		now = WhatIsMissingInRow(i, *b);
+		now = WhatIsMissingInColumn(i, *b);
 		if (now == 0)
 			continue;
 
-		AddToRow(i, now, b);
+		AddToColumn(i, now, b);
 	}
 
 	//adding to the cube
@@ -369,7 +339,14 @@ output: none
 */
 void Solve(Board *b)
 {
-
+	while (b->GetCount() < 81)
+	{
+		for (size_t i = 0; i < BOARD_SIZE; i++)
+		{
+			ForLoopForNumber(i, b);
+		}
+		RowsColumnsAndCubes(b);
+	}
 }
 
 

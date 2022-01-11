@@ -3,6 +3,7 @@
 #include <string>
 #include "Board.h"
 #include "Structs.h"
+#include "SolveSudoku.cpp"
 
 
 int main()
@@ -11,7 +12,7 @@ int main()
 
 	Board *b = new Board(board);
 
-
+	Solve(b);
 
 	delete b;
 	return 0;

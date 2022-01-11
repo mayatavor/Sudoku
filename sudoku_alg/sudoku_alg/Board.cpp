@@ -16,14 +16,20 @@ Board::Board(std::string b)
     {
         this->number_amount[i] = this->CountNumber(b, i+1);
     }
+    
+    for (size_t i = 0; i < BOARD_SIZE; i++)
+    {
+        this->number_count += this->number_amount[i];
+    }
 }
 
-bool Board::AddNumber(PlaceInfo place)
+void Board::AddNumber(PlaceInfo place)
 {
     if (this->board[place.rowNumber][place.columnNumber] == 0)
     {
         this->board[place.rowNumber][place.columnNumber] = place.number;
         this->number_amount[place.number - 1] = this->number_amount[place.number - 1] + 1;
+        this->number_count++;
     }
 }
 
@@ -47,30 +53,75 @@ bool Board::CheckForColumn(int cNum, int num)
     return false;
 }
 
-int Board::HowManyMissingR(int rNum)
-{
-    return 0;
-}
 
-int Board::HowManyMissingC(int cNum)
+void Board::PrintBoard()
 {
-    return 0;
-}
+    //option 1
+    /*
+            -----------------------------------------
+            || 0 | 9 | 8 || 0 | 4 | 5 || 1 | 3 | 7 ||
+            ||-----------||-----------||-----------||
+            || 0 | 0 | 0 || 0 | 0 | 0 || 0 | 0 | 0 ||
+            ||-----------||-----------||-----------||
+            || 0 | 0 | 0 || 0 | 0 | 0 || 0 | 0 | 0 ||
+            ||-------------------------------------||
+            || 0 | 0 | 0 || 0 | 0 | 0 || 0 | 0 | 0 ||
+            ||-----------||-----------||-----------||
+            || 0 | 0 | 0 || 0 | 0 | 0 || 0 | 0 | 0 ||
+            ||-----------||-----------||-----------||
+            || 0 | 0 | 0 || 0 | 0 | 0 || 0 | 0 | 0 ||
+            ||-------------------------------------||
+            || 0 | 0 | 0 || 0 | 0 | 0 || 0 | 0 | 0 ||
+            ||-----------||-----------||-----------||
+            || 0 | 0 | 0 || 0 | 0 | 0 || 0 | 0 | 0 ||
+            ||-----------||-----------||-----------||
+            || 0 | 0 | 0 || 0 | 0 | 0 || 0 | 0 | 0 ||
+            -----------------------------------------
+    */
 
-bool Board::AddMissingR(int rNum)
-{
-    return false;
-}
+    //option 2
+    /*
+           -------------------------
+           | 0 9 8 | 0 4 5 | 1 3 7 |
+           | 0 0 0 | 0 0 0 | 0 0 0 |
+           | 0 0 0 | 0 0 0 | 0 0 0 |
+           -------------------------
+           | 0 0 0 | 0 0 0 | 0 0 0 |
+           | 0 0 0 | 0 0 0 | 0 0 0 |
+           | 0 0 0 | 0 0 0 | 0 0 0 |
+           -------------------------
+           | 0 0 0 | 0 0 0 | 0 0 0 |
+           | 0 0 0 | 0 0 0 | 0 0 0 |
+           | 0 0 0 | 0 0 0 | 0 0 0 |
+           -------------------------
+    */
+    std::cout << "-------------------------" << std::endl;
+    for (size_t i = 0; i < BOARD_SIZE; i++)
+    {
+        std::cout << "|";
+        for (size_t j = 0; j < BOARD_SIZE; j++)
+        {
+            if (j % 3 == 0)
+                std::cout << "| ";
 
-bool Board::AddMissingC(int cNum)
-{
-    return false;
-}
+            std::cout << this->board[i][j] << " ";
+        }
 
+        std::cout << std::endl;
+
+        if (i % 3 == 0)
+            std::cout << "-------------------------" << std::endl;
+    }
+}
 
 //helpers
 int Board::CountNumber(std::string b, int number)
 {
     return std::count(b.begin(), b.end(), number);
+}
+
+int Board::GetCount()
+{
+    return this->number_count;
 }
 
