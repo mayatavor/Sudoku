@@ -1,5 +1,6 @@
 #include <iostream>
 #include <list>
+#include <ctime>
 #include <string>
 #include "Board.h"
 #include "Structs.h"
@@ -186,11 +187,11 @@ std::vector<PlaceInfo> FindPlacesInCube(bool rows[], bool columns[], int rNum, i
 	for (size_t i = 0; i < CUBE_SIZE; i++)
 	{
 		if (rows[i] == true)
-			break;
+			continue;
 		for (size_t j = 0; j < CUBE_SIZE; j++)
 		{
 			if (columns[j] == true)
-				break;
+				continue;
 			places.push_back(PlaceInfo(i, j));
 		}
 	}
@@ -240,22 +241,133 @@ void ForLoopForNumber(int number, Board *b)
 			columnNum = 0;
 		}
 		if (CheckCube(rowNum, columnNum, number, *b))
-			break;
+			continue;
 
 		PlaceInfo place = FindPlaceToAddNumber(number, rowNum, columnNum, *b);
 
 		if (place.columnNumber == 100)
-			break;
+			continue;
 
 		place.number = number;
 
-		b->board[place.rowNumber][place.rowNumber] = place.number;
+		b->board[place.rowNumber][place.columnNumber] = place.number;
 		columnNum += 3;
 	}
 }
 
 
-bool Solve(Board b)
+/*
+this function gets the row, number and board, and adds the number to the row
+		***** this function only gets a row with one number missing *****
+
+input: the row number, the number to add and a pointer to the board
+output: none
+*/
+void AddToRow(int row, int num, Board* b)
+{
+	for (size_t i = 0; i < BOARD_SIZE; i++)
+	{
+		if (b->board[row][i] == 0)
+		{
+			b->board[row][i] = num;
+			break;
+		}
+	}
+}
+/*
+this function gets the column, number and board, and adds the number to the column
+		***** this function only gets a column with one number missing *****
+
+input: the column number, the number to add and a pointer to the board
+output: none
+*/
+void AddToColumn(int column, int num, Board* b)
+{
+	for (size_t i = 0; i < BOARD_SIZE; i++)
+	{
+		if (b->board[i][column] == 0)
+		{
+			b->board[i][column] = num;
+			break;
+		}
+	}
+}
+/*
+this function gets the row and column of the column, number and board, and adds the number to the cube
+		***** this function only gets a cube with one number missing *****
+
+input: the row number, the column number, the number to add and a pointer to the board
+output: none
+*/
+void AddToCube(int row, int col, int num, Board* b)
+{
+	for (size_t i = row; i < CUBE_SIZE; i++)
+	{
+		for (size_t j = col; j < CUBE_SIZE; j++)
+		{
+			if (b->board[i][j] == 0)
+			{
+				b->board[i][j] = num;
+				break;
+			}
+		}
+	}
+}
+
+
+
+/*
+this function goes over the cubes, rows and columns to see if there is only one number missing. if so, it adds it
+input: a pointer to the board
+output: none
+*/
+void RowsColumnsAndCubes(Board* b)
+{
+	int now = 0;
+
+	//adding to the rows
+	for (size_t i = 0; i < BOARD_SIZE; i++)
+	{
+		now = WhatIsMissingInRow(i, *b);
+		if (now == 0)
+			continue;
+		
+		AddToRow(i, now, b);
+	}
+
+	//adding to the column
+	for (size_t i = 0; i < BOARD_SIZE; i++)
+	{
+		now = WhatIsMissingInRow(i, *b);
+		if (now == 0)
+			continue;
+
+		AddToRow(i, now, b);
+	}
+
+	//adding to the cube
+	for (size_t i = 0; i < CUBE_SIZE; i+=3)
+	{
+		for (size_t j = 0; j < CUBE_SIZE; j+=3)
+		{
+			now = WhatIsMissingInCube(i, j, *b);
+			if (now == 0)
+				continue;
+
+			AddToCube(i, j, now, b);
+		}
+	}
+
+}
+
+
+
+/*
+this function is the loop to solve the sudoku
+input: a pointer to the board
+output: none
+*/
+void Solve(Board *b)
 {
 
 }
