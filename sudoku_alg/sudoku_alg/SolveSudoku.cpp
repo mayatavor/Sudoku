@@ -282,6 +282,7 @@ void SolveSoduko::Solve()
 			ForLoopForNumber(i);
 		}
 		RowsColumnsAndCubes();
+		
 	}
 
 	this->b->PrintBoard();
