@@ -5,6 +5,7 @@
 #include "Structs.h"
 
 #define BOARD_SIZE 9
+#define CUBE_SIZE 3
 
 class Board
 {
@@ -12,14 +13,14 @@ public:
 	Board(std::string b);
 
 	/*
-	if the program found where to put a number, the functio will put the number in the correct place and add 1 to the number count
+	if the program found where to put a number, the function will put the number in the correct place and add 1 to the number count
 	input: the number to add, the row number and the column number
 	output: void
 	*/
 	void AddNumber(PlaceInfo);
 
 	/*
-	this functio checks if the number is in the row
+	this function checks if the number is in the row
 	input: the number and the row
 	output: if the number already exists in the row or not
 	*/

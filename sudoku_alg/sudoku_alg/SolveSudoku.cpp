@@ -286,4 +286,12 @@ void SolveSoduko::Solve()
 	}
 
 	this->b->PrintBoard();
+	std::cout << std::endl;
+	for (size_t i = 0; i < BOARD_SIZE; i++)
+	{
+		for (size_t j = 0; j < BOARD_SIZE; j++)
+		{
+			std::cout << this->b->board[i][j];
+		}
+	}
 }
