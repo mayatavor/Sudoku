@@ -13,6 +13,12 @@ struct PlaceInfo
 		rowNumber = r;
 		columnNumber = c;
 	}
+	PlaceInfo(int r, int c)
+	{
+		number = 0;
+		rowNumber = r;
+		columnNumber = c;
+	}
 };
 
 
