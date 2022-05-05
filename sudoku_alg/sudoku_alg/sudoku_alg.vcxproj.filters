@@ -21,9 +21,24 @@
     <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SolveSudoku.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IsSudokuSolved.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolveSudoku.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IsSudokuSolved.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
