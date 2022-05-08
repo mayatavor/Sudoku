@@ -1,6 +1,9 @@
 # sudoku
 
-Program for solving sudoku & Program for checking is a sudoku is solved correctly
+Program for solving sudoku & Program for checking if a sudoku is solved correctly.
+
+I have 2 mains in the code. One for the solving algorithm and one for checking if a sudoku is solved correctly.
+You can choose which main to run, and you can try and run sudokus of your own.
 
 ## Solving Sudoku
 
@@ -13,7 +16,7 @@ My solving algorithm is a plan of checking lines and rows for a specific number:
   - After looking for free rows and columns, the code crosscheck the free rows and columns to see if there is an empty place to enter the number.
   - After checking that there is no error ( the code found a place), the code enters the number to the place.
 * After checking all the possible places for all the numbers, the code checks for any one open space in rows, columns and cubes. If there is only one place missing, it will add the missing number.
-* Before doing another number round, the code checks if the sudoku is already solved. If so, it will print the solved sudoku. Else, it will move on to the next number.
+* Before doing another number round, the code checks if the sudoku is already solved. If so, it will print the solved sudoku. Else, it will start over the loop.
 
 In my code, I have a few examples for sudokus that my code can solve. For now, it can only solve easy sudokus.
 
@@ -26,3 +29,4 @@ In my code, I have a few examples for sudokus that my code can solve. For now, i
 
 If all conditions were true -> the sudoku is solved currectly. If not -> there is an error.
 
+In my code, I have examples for a sudoku that is solved correctly, and a sudoku that has an error.
