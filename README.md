@@ -1,5 +1,7 @@
 # sudoku
 
+Program for solving sudoku & Program for checking is a sudoku is solved correctly
+
 ## Solving Sudoku
 
 My solving algorithm is a plan of checking lines and rows for a specific number:
@@ -17,5 +19,5 @@ In my code, I have a few examples for sudokus that my code can solve. For now, i
 
 ## Checking If Sudoku Is Solved Correctly
 
-
+ 
 
