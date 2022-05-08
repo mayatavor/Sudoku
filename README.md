@@ -19,5 +19,9 @@ In my code, I have a few examples for sudokus that my code can solve. For now, i
 
 ## Checking If Sudoku Is Solved Correctly
 
- 
+ I build an algorithm that checks if the sudoku is solved in the right way. 
+ * First of all, I started by checking that the board has every number 9 times.
+ * After that, if all the numbers apear 9 times, I checked to see if all the rows and columns have all of the numbers ( every row has numbers 1 through 9 plus every column has numbers 1 through 9 ).
+ * Finally, I checked to see if every cube has all of the numbers ( every cube has numbers 1 through 9 ).
+If all conditions were true -> the sudoku is solved currectly. If not -> there is an error.
 
